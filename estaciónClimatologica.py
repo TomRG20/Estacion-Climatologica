@@ -24,17 +24,20 @@
 
 """
 
-from tkinter import LabelFrame, Tk, TkVersion, Button, Entry, Label, PhotoImage, Frame
+import sys, os
+import time
+from datetime import date, datetime
+from tkinter import (Button, Entry, Frame, Label, LabelFrame, PhotoImage, Tk,
+                     TkVersion)
 from tkinter.constants import CENTER, LEFT, RIGHT
 from tkinter.font import BOLD
 from typing import Text
-from PIL import Image, ImageTk #pip install Pillow
-import requests        #pip install requests
-import time
-import sys
-from datetime import date, datetime
-    
-class Estación(Frame):
+
+import requests  # pip install requests
+from PIL import Image, ImageTk  # pip install Pillow
+
+
+class Estacion(Frame):
     def __init__(self, master, *args):
         super().__init__(master, *args)
         
@@ -109,13 +112,13 @@ class Estación(Frame):
         
         self.obtener_tiempo()
         
-        gif = Image.open('buscar.gif')     #carga la imagen
+        gif = Image.open("Estacion Climatologica/images/buscar.gif")     #carga la imagen
         frames = gif.n_frames
         
         #**************************************************************************************************************************
         # Esto me cambia la imagen del tiempo actual, y para colocarlo uso place en vez de pack, asi se me queda centrado.
         
-        self.img_Tiempo2 = PhotoImage(file = self.img_Tiempo)         
+        self.img_Tiempo2 = PhotoImage(file = "Estacion Climatologica/images/" + self.img_Tiempo)         
                         
         if self.paso == False:            
             self.imagenTiempo = Label(self.frame9, image= self.img_Tiempo2, bg='#a1cda8').place(relx=0.25, rely=0.25, anchor='ne')
@@ -128,7 +131,7 @@ class Estación(Frame):
         
         if self.click == True: 
             for i in range(1, frames):
-                self.inicio = PhotoImage(file= 'buscar.gif', format='gif -index %i' %(i)) 
+                self.inicio = PhotoImage(file= "Estacion Climatologica/images/buscar.gif", format='gif -index %i' %(i)) 
                 self.bt_inicio['image'] = self.inicio
                 time.sleep(0.04)
                 self.master.update()
@@ -229,13 +232,16 @@ class Estación(Frame):
         
     
     def widgets(self):
-        self.inicio = PhotoImage(file ='buscar.gif')             
-        self.imagen_temp = PhotoImage(file ='temperaturas.png')       
-        self.imagen_temp_min = PhotoImage(file ='temperaturasMIN.png')        
-        self.imagen_temp_max = PhotoImage(file ='temperaturasMAX.png')       
-        self.imagen_humedad = PhotoImage(file ='lluvia.png')       
-        self.imagen_viento = PhotoImage(file ='viento2.png')
-        self.imagen_presion = PhotoImage(file ='presion.png')
+
+        #ruta = os.path.abspath("Estacion Climatologica/images/fuertes lluvias.png")
+        
+        self.inicio = PhotoImage(file ="Estacion Climatologica/images/buscar.gif")             
+        self.imagen_temp = PhotoImage(file ="Estacion Climatologica/images/temperaturas.png")       
+        self.imagen_temp_min = PhotoImage(file ="Estacion Climatologica/images/temperaturasMIN.png")        
+        self.imagen_temp_max = PhotoImage(file ="Estacion Climatologica/images/temperaturasMAX.png")       
+        self.imagen_humedad = PhotoImage(file ="Estacion Climatologica/images/lluvia.png")       
+        self.imagen_viento = PhotoImage(file ="Estacion Climatologica/images/viento2.png")
+        self.imagen_presion = PhotoImage(file ="Estacion Climatologica/images/presion.png")
                     
         #Texto solicitando que ingresen la localidad
         Label(self.frame,text='Ingrese su localidad: ',fg= 'white', bg='gray',font=('Helvetica',14)).grid(column=0,row=0, padx=5)
@@ -324,8 +330,11 @@ if __name__ == "__main__":
     #ventana.config(bg= 'sky blue') se puede usar tanto el codigo en exadecimal como los colores de tkinder definidos por nombre
     ventana.minsize(height= 430, width= 860)
     ventana.maxsize(height= 430, width= 1200)
-    ventana.call('wm', 'iconphoto', ventana._w, ImageTk.PhotoImage(Image.open('fuertes lluvias.png')))
+
+    ruta = os.path.abspath("Estacion Climatologica/images/fuertes lluvias.png")
+    ventana.call('wm', 'iconphoto', ventana._w, ImageTk.PhotoImage(file=ruta))
+
     ventana.geometry('860x420')
     #ventana.resizable(0,0) esto deshabilita el boton maximizar
-    app = Estación(ventana)
+    app = Estacion(ventana)
     app.mainloop()
